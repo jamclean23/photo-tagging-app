@@ -5,18 +5,20 @@
 
 // React
 import React from 'react';
-import { Component }  from './components/Component.js';
 
+// Components
+import Header from './components/Header/Header';
+import Main from './components/Main/Main';
 
-// ====== FUNCTIONS ======
-
-// Main app function 
+// ====== APP ====== 
 function App () {
+
+
     return (
-        <div>
-            <h1>Content goes here</h1>
-            <Component />
-        </div>
+        <>
+            <Header />
+            <Main />
+        </>
     );
 }
 

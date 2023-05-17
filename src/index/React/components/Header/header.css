@@ -1,0 +1,17 @@
+.menuImageWrapper {
+    height: 100%;
+    position: relative;
+    
+}
+
+.menuImageWrapper > img {
+    transform: translate(0, -50%);
+}
+
+.menuImageWrapper > h1 {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 30%);
+}
