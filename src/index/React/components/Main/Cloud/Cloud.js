@@ -9,10 +9,14 @@ function Cloud (props) {
 
     const [cloudImg, setCloudImg] = useState();
     const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [cloudHeight, setCloudHeight] = useState(0);
+
     const renderCounter = useRef(0);
     const animationCounter = useRef(0);
+    const speed = useRef(setSpeed());
+
     const clouds = useContext(MainContext);
-    const [cloudHeight, setCloudHeight] = useState(0);
+    const keepGeneratingClouds = useRef(true);
 
     // Hooks
 
@@ -25,7 +29,7 @@ function Cloud (props) {
             setupCloudHeight();
 
             // Initialize animation
-            initAnimate();
+            initAnimate(1);
 
             // Different setup if clouds are initial
             if (props.initial) {
@@ -49,6 +53,10 @@ function Cloud (props) {
 
 
     // Local functions
+
+    function setSpeed () {
+        return Math.random() * .4 + .2;
+    }
 
     function setupCloudHeight () {
         setCloudHeight(Math.random() * window.innerHeight * .6);
@@ -83,19 +91,15 @@ function Cloud (props) {
     }
 
     function initAnimate () {
-        if (animationCounter.current%3 === 0) {
+        if (animationCounter.current%1 === 0) {
             updatePosition();
         }
         window.requestAnimationFrame(initAnimate);
         animationCounter.current = animationCounter.current + 1;
     }
 
-    function setSpeed (rangeLow, rangeHigh) {
-        return Math.random() * (rangeHigh - rangeLow);
-    }
-
     function updatePosition () {
-        setPosition((position) => ({x: position.x + 1, y: position.y}));
+        setPosition((position) => ({x: position.x + speed.current, y: position.y}));
     }
 
     function removeSelf () {
