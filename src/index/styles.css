@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow: hidden;
+}
+
 #root {
     background: rgb(187,233,232);
     background: linear-gradient(180deg, rgba(187,233,232,1) 0%, rgba(77,219,224,1) 19%, rgba(65,80,190,1) 100%);
