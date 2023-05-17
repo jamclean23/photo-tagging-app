@@ -1,6 +1,7 @@
 .menuImageWrapper {
     height: 100%;
     position: relative;
+    z-index: 2;
     
 }
 
@@ -15,3 +16,4 @@
     left: 50%;
     transform: translate(-50%, 30%);
 }
+

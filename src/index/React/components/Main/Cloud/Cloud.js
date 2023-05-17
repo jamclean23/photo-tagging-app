@@ -12,17 +12,30 @@ function Cloud (props) {
     const renderCounter = useRef(0);
     const animationCounter = useRef(0);
     const clouds = useContext(MainContext);
+    const [cloudHeight, setCloudHeight] = useState(0);
 
     // Hooks
 
     useEffect(() => {
         if (renderCounter.current === 0) {
+            // Set the image used for the cloud
             setCloudImg(props.cloudsImgs[Math.floor(Math.random() * props.cloudsImgs.length)]);
+
+            // Set the height of the element
+            setupCloudHeight();
+
+            // Initialize animation
             initAnimate();
 
+            // Different setup if clouds are initial
             if (props.initial) {
                 setUpInitialCloud();
+            } else {
+            // Standard Cloud Setup
+                setUpCloud();
             }
+
+            // 
 
             renderCounter.current = renderCounter.current + 1;
         }
@@ -37,16 +50,29 @@ function Cloud (props) {
 
     // Local functions
 
+    function setupCloudHeight () {
+        setCloudHeight(Math.random() * window.innerHeight * .6);
+    }
+
     function setUpInitialCloud () {
         const randomOnScreenX = Math.floor(Math.random() * window.innerWidth);
-        console.log('Random X: ');
         const randomOnScreenY = Math.floor(Math.random() * window.innerHeight);
 
         setPosition({x: randomOnScreenX, y: randomOnScreenY});
     }
 
+    function setUpCloud () {
+        const randomOffScreenX = 0 - Math.random() * 300;
+        const randomOnScreenY = Math.floor(Math.random() * window.innerHeight);
+
+        setPosition({x: randomOffScreenX, y: randomOnScreenY});
+    }
+
     function handleOnLoad () {
-        setPosition({ x: position.x - getDomCloudElement().getBoundingClientRect().width / 2, y: position.y - getDomCloudElement().getBoundingClientRect().height / 2 });
+        setPosition({
+            x: position.x - getDomCloudElement().getBoundingClientRect().width / 2,
+            y: position.y - getDomCloudElement().getBoundingClientRect().height / 2 
+        });
     }
 
     function getDomCloudElement () {
@@ -81,7 +107,7 @@ function Cloud (props) {
     // Render
 
     return (
-        <img onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px' }} className="Cloud" src={cloudImg}/>
+        <img onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px', height: cloudHeight + 'px' }} className="Cloud" src={cloudImg}/>
     );
 }
 

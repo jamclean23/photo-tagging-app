@@ -21,27 +21,56 @@ function Main (props) {
     // Init
     const [clouds, setClouds] = useState([]);
     const renderCounter = useRef(0);
+    const cloudCounter = useRef(0);
+    const leastCloudNum = 3;
+    const mostCloudNum = 9;
 
     // Hooks
 
     useEffect(() => {
         if (renderCounter.current === 0) {
-            generateInitialClouds(cloudImgs, 3, 6);
+            generateInitialClouds(cloudImgs, leastCloudNum, mostCloudNum);
             renderCounter.current = renderCounter.current + 1;
         }        
 
     }, []);
 
+    useEffect(() => {
+        if (cloudCounter.current) {
+            initCloudGeneration(clouds);
+        }
+
+        cloudCounter.current = cloudCounter.current + 1;
+    }, [clouds]);
+
     // Local functions
+
+    function initCloudGeneration (clouds) {
+        console.log(clouds);
+        if (clouds.length < mostCloudNum) {
+            createCloud();
+        }
+    }
+
+    function createCloud () {
+        console.log('Creating Cloud');
+        let cloudsCopy = [...clouds];
+
+        const key = uniqid();
+        cloudsCopy.push(<Cloud initial={false} key={key} idKey={key} setClouds={setClouds} cloudsImgs={cloudImgs}/>);
+
+        setClouds(cloudsCopy);
+    }
 
     function generateInitialClouds (cloudImgs, leastCloudNum, mostCloudNum) {
         // Pick a random number between leastCloudNum and mostCloudNum
         const numToGenerate = Math.floor((Math.random() * (mostCloudNum - leastCloudNum + 1)) + leastCloudNum);
-        
-        createCloudImgs(numToGenerate);
+
+        // Create cloud components
+        createInitialClouds(numToGenerate);
     }
 
-    function createCloudImgs (numToGenerate) {
+    function createInitialClouds (numToGenerate) {
         let cloudsCopy = [...clouds];
 
         for (let i = 0; i < numToGenerate; i++) {
