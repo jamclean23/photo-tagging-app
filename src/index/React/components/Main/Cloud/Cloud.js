@@ -145,7 +145,7 @@ function Cloud (props) {
     // Render
 
     return (
-        <img data-is-waldo={amWaldo.current} onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px', height: cloudHeight + 'px', display: shouldDisplay }} className="Cloud" src={cloudImg}/>
+        <img draggable="false" data-is-waldo={amWaldo.current} onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px', height: cloudHeight + 'px', display: shouldDisplay }} className="Cloud" src={cloudImg}/>
     );
 }
 

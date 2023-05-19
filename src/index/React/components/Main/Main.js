@@ -10,6 +10,9 @@ const cloudImgs = [cloud1, cloud2, cloud3, cloud4, waldoCloud];
 import uniqid from 'uniqid';
 
 import Cloud from "./Cloud/Cloud";
+import StartMenu from './StartMenu/StartMenu.js';
+
+import './main.css';
 
 // Create context
 
@@ -86,6 +89,7 @@ function Main (props) {
         <main className="Main">
             <MainContext.Provider value={{clouds}}>
                 { clouds }
+                <StartMenu />
             </MainContext.Provider>
         </main>
     );

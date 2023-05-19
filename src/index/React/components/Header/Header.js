@@ -10,8 +10,8 @@ import cloud1 from '../../../../assets/clouds/cloud1.png';
 function Header (props) {
     return (<header className="Header">
         <div className="menuImageWrapper">
-            <h1><span class="wheres">Where's </span><span class="waldo">Waldo?</span></h1>
-            <img src={cloud1}/>
+            <h1><span className="wheres">Where's </span><span className="waldo">Waldo?</span></h1>
+            <img draggable="false" src={cloud1}/>
         </div>
     </header>);
 }

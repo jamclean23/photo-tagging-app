@@ -1,0 +1,59 @@
+.StartMenu {
+    background-color: white;
+    width: min(calc(var(--doc-width) * .8), 400px);
+    height: calc(var(--doc-height) * .4);
+    position: fixed;
+    left: calc(var(--doc-width) / 2);
+    bottom: 2rem;
+    transform: translate(-50%);
+    border: 2px solid black;
+    z-index: 5;
+}
+
+.StartMenu > h2 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
+
+}
+
+.startWrapper {
+    position: absolute;
+    overflow: hidden;
+    width: 40%;
+    height: 30%;
+    bottom: 2rem;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stamp {
+    flex-shrink: 0;
+    width: 115%;
+    height: 185%;
+}
+
+.startWrapper:hover {
+    box-shadow: 0 0 4px 4px var(--waldo-blue);
+}
+
+.startWrapper:active > .startBtnText {
+    color: var(--waldo-red);
+}
+
+.startBtnText {
+    font-family: optima;
+    font-weight: 100;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+
+}
