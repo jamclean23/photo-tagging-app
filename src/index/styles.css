@@ -9,9 +9,14 @@
     box-sizing: border-box;
 }
 
+html, body {
+    overflow: hidden;
+}
+
 body {
     overflow: hidden;
     user-select: none;
+    position: relative;
 }
 
 #root {
