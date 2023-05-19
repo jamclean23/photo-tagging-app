@@ -10,34 +10,44 @@ function Cloud (props) {
     const [cloudImg, setCloudImg] = useState();
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [cloudHeight, setCloudHeight] = useState(0);
-
+    const [shouldDisplay, setShouldDisplay] = useState('none');
+    
+    const amWaldo = useRef(false);
     const renderCounter = useRef(0);
     const animationCounter = useRef(0);
     const speed = useRef(setSpeed());
 
-    const clouds = useContext(MainContext);
-    const keepGeneratingClouds = useRef(true);
+    const clouds = useContext(MainContext).clouds;
 
     // Hooks
 
     useEffect(() => {
         if (renderCounter.current === 0) {
+            // If cloud is initial, do not allow waldo cloud
+            let cloudsOffset = 0;
+
+            if (props.initial || checkWaldoExists()) {
+                cloudsOffset = 1;
+            }
+            
+
             // Set the image used for the cloud
-            setCloudImg(props.cloudsImgs[Math.floor(Math.random() * props.cloudsImgs.length)]);
+            let imgIndex = Math.floor(Math.random() * (props.cloudsImgs.length - cloudsOffset));
+
+            // If is waldo, set waldo
+            if (imgIndex === 4) {
+                console.log('A waldo has been chosen');
+                amWaldo.current = true;
+            }
+
+            setCloudImg(props.cloudsImgs[imgIndex]);
+
 
             // Set the height of the element
             setupCloudHeight();
 
             // Initialize animation
             initAnimate(1);
-
-            // Different setup if clouds are initial
-            if (props.initial) {
-                setUpInitialCloud();
-            } else {
-            // Standard Cloud Setup
-                setUpCloud();
-            }
 
             // 
 
@@ -54,6 +64,18 @@ function Cloud (props) {
 
     // Local functions
 
+    function checkWaldoExists () {
+        let waldoExists = false;
+        const cloudDomElements = document.querySelectorAll('.Cloud');
+        cloudDomElements.forEach((cloudElement) => {
+            if (cloudElement.getAttribute('data-is-waldo') === 'true') {
+                waldoExists = true;
+            }
+        });
+
+        return waldoExists;
+    }
+
     function setSpeed () {
         return Math.random() * .4 + .2;
     }
@@ -66,21 +88,33 @@ function Cloud (props) {
         const randomOnScreenX = Math.floor(Math.random() * window.innerWidth);
         const randomOnScreenY = Math.floor(Math.random() * window.innerHeight);
 
-        setPosition({x: randomOnScreenX, y: randomOnScreenY});
+        return { x: randomOnScreenX, y: randomOnScreenY };
     }
 
     function setUpCloud () {
-        const randomOffScreenX = 0 - Math.random() * 300;
+        const randomOffScreenX = 0 - 800 + Math.random() * 200;
         const randomOnScreenY = Math.floor(Math.random() * window.innerHeight);
 
-        setPosition({x: randomOffScreenX, y: randomOnScreenY});
+        return { x: randomOffScreenX, y: randomOnScreenY };
     }
 
     function handleOnLoad () {
+
+        let positionObj = {};
+        // Different setup if clouds are initial
+        if (props.initial) {
+            positionObj = setUpInitialCloud();
+        } else {
+        // Standard Cloud Setup
+            positionObj = setUpCloud();
+        }
+
         setPosition({
-            x: position.x - getDomCloudElement().getBoundingClientRect().width / 2,
-            y: position.y - getDomCloudElement().getBoundingClientRect().height / 2 
+            x: positionObj.x - getDomCloudElement().getBoundingClientRect().width / 2,
+            y: positionObj.y - getDomCloudElement().getBoundingClientRect().height / 2 
         });
+
+        setShouldDisplay('block');
     }
 
     function getDomCloudElement () {
@@ -111,7 +145,7 @@ function Cloud (props) {
     // Render
 
     return (
-        <img onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px', height: cloudHeight + 'px' }} className="Cloud" src={cloudImg}/>
+        <img data-is-waldo={amWaldo.current} onLoad={handleOnLoad} data-key={props.idKey} style={{ right: position.x + 'px', top: position.y + 'px', height: cloudHeight + 'px', display: shouldDisplay }} className="Cloud" src={cloudImg}/>
     );
 }
 

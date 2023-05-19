@@ -1,3 +1,8 @@
+@font-face {
+    font-family: optima;
+    src: url('../assets/fonts/Optima\ ExtraBlack.ttf');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,6 +18,9 @@ body {
     background: linear-gradient(180deg, rgba(187,233,232,1) 0%, rgba(77,219,224,1) 19%, rgba(65,80,190,1) 100%);
     height: var(--doc-height);
     overflow: hidden;
+    --waldo-blue: #0098d5;
+    --waldo-red: #dc2d1d;
+    -webkit-text-stroke: .5px black;
 }
 
 .Header {

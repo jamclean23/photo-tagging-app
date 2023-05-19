@@ -4,7 +4,8 @@ import cloud1 from '../../../../assets/clouds/cloud1.png';
 import cloud2 from '../../../../assets/clouds/cloud2.png';
 import cloud3 from '../../../../assets/clouds/cloud3.png';
 import cloud4 from '../../../../assets/clouds/cloud4.png';
-const cloudImgs = [cloud1, cloud2, cloud3, cloud4];
+import waldoCloud from '../../../../assets/clouds/waldocloud.png';
+const cloudImgs = [cloud1, cloud2, cloud3, cloud4, waldoCloud];
 
 import uniqid from 'uniqid';
 
@@ -22,8 +23,8 @@ function Main (props) {
     const [clouds, setClouds] = useState([]);
     const renderCounter = useRef(0);
     const cloudCounter = useRef(0);
-    const leastCloudNum = 3;
-    const mostCloudNum = 9;
+    const leastCloudNum = 12;
+    const mostCloudNum = 15;
 
     // Hooks
 
@@ -46,14 +47,12 @@ function Main (props) {
     // Local functions
 
     function initCloudGeneration (clouds) {
-        console.log(clouds);
         if (clouds.length < mostCloudNum) {
             createCloud();
         }
     }
 
     function createCloud () {
-        console.log('Creating Cloud');
         let cloudsCopy = [...clouds];
 
         const key = uniqid();
@@ -85,7 +84,7 @@ function Main (props) {
 
     return (
         <main className="Main">
-            <MainContext.Provider value={clouds}>
+            <MainContext.Provider value={{clouds}}>
                 { clouds }
             </MainContext.Provider>
         </main>

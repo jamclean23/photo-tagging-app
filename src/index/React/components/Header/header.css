@@ -10,10 +10,22 @@
 }
 
 .menuImageWrapper > h1 {
+    font-family: optima;
+    font-weight: 100;
+    font-size: 2.5rem;
     position: absolute;
     z-index: 1;
     top: 0;
     left: 50%;
     transform: translate(-50%, 30%);
+    white-space: nowrap;
+}
+
+.wheres {
+    color: var(--waldo-blue);
+}
+
+.waldo {
+    color: var(--waldo-red);
 }
 
