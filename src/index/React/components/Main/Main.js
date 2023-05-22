@@ -11,6 +11,7 @@ import uniqid from 'uniqid';
 
 import Cloud from "./Cloud/Cloud";
 import StartMenu from './StartMenu/StartMenu.js';
+import Game from "./Game/Game";
 
 import './main.css';
 
@@ -24,6 +25,9 @@ export const MainContext = React.createContext()
 function Main (props) {
     // Init
     const [clouds, setClouds] = useState([]);
+    const [shouldGenerate, setShouldGenerate] = useState(true);
+    const [shouldDisplayStart, setShouldDisplayStart] = useState(true);
+    const [shouldDisplayGame, setShouldDisplayGame] = useState(false);
     const renderCounter = useRef(0);
     const cloudCounter = useRef(0);
     const leastCloudNum = 12;
@@ -40,7 +44,7 @@ function Main (props) {
     }, []);
 
     useEffect(() => {
-        if (cloudCounter.current) {
+        if (cloudCounter.current && shouldGenerate) {
             initCloudGeneration(clouds);
         }
 
@@ -48,6 +52,10 @@ function Main (props) {
     }, [clouds]);
 
     // Local functions
+
+    function handleStartBtnClick () {
+        setShouldGenerate(false);
+    }
 
     function initCloudGeneration (clouds) {
         if (clouds.length < mostCloudNum) {
@@ -87,9 +95,18 @@ function Main (props) {
 
     return (
         <main className="Main">
-            <MainContext.Provider value={{clouds}}>
+            <MainContext.Provider value={{clouds, shouldGenerate}}>
                 { clouds }
-                <StartMenu />
+
+                { shouldDisplayStart 
+                    ? <StartMenu setShouldDisplayStart={setShouldDisplayStart} setShouldDisplayGame={setShouldDisplayGame} handleStartBtnClick={handleStartBtnClick}/> 
+                    : '' 
+                }
+
+                { shouldDisplayGame && !clouds.length
+                    ? <Game /> 
+                    : '' }
+
             </MainContext.Provider>
         </main>
     );

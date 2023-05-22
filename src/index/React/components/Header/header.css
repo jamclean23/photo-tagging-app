@@ -6,19 +6,26 @@
 }
 
 .menuImageWrapper > img {
+    height: 400%;
     transform: translate(0, -50%);
 }
 
 .menuImageWrapper > h1 {
     font-family: optima;
     font-weight: 100;
-    font-size: 2.5rem;
+    font-size: calc(var(--doc-height) * .06);
     position: absolute;
     z-index: 1;
     top: 0;
     left: 50%;
-    transform: translate(-50%, 30%);
+    transform: translate(-50%, 0%);
     white-space: nowrap;
+    text-shadow:
+        calc(var(--doc-height) * .001) 0 black,
+        0 calc(var(--doc-height) * -.001) black,
+        calc(var(--doc-height) * -.001) 0 black,
+        0 calc(var(--doc-height) * .001) black;
+      
 }
 
 .wheres {

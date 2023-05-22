@@ -26,12 +26,15 @@ body {
     overflow: hidden;
     --waldo-blue: #0098d5;
     --waldo-red: #dc2d1d;
-    -webkit-text-stroke: .5px black;
 }
 
 .Header {
-    height: calc(var(--doc-height) * .1);
+    height: calc(var(--doc-height) * .16);
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.Main {
+    height: calc(var(--doc-height) * .84);
 }

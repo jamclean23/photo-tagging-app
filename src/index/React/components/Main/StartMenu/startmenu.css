@@ -1,6 +1,6 @@
 .StartMenu {
     background-color: white;
-    width: min(calc(var(--doc-width) * .8), 400px);
+    width: min(calc(var(--doc-width) * .9), 400px);
     height: calc(var(--doc-height) * .4);
     position: absolute;
     left: 50%;

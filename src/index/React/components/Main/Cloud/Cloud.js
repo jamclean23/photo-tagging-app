@@ -16,10 +16,18 @@ function Cloud (props) {
     const renderCounter = useRef(0);
     const animationCounter = useRef(0);
     const speed = useRef(setSpeed());
+    const speedup = useRef(false);
 
     const clouds = useContext(MainContext).clouds;
+    const shouldGenerate = useContext(MainContext).shouldGenerate;
 
     // Hooks
+
+    useEffect(() => {
+        if (shouldGenerate === false) {
+            speedup.current = true;
+        }
+    }, [shouldGenerate]);
 
     useEffect(() => {
         if (renderCounter.current === 0) {
@@ -36,7 +44,6 @@ function Cloud (props) {
 
             // If is waldo, set waldo
             if (imgIndex === 4) {
-                console.log('A waldo has been chosen');
                 amWaldo.current = true;
             }
 
@@ -126,6 +133,9 @@ function Cloud (props) {
 
     function initAnimate () {
         if (animationCounter.current%1 === 0) {
+            if (speedup.current === true) {
+                speed.current = speed.current + (speed.current * .08);
+            }
             updatePosition();
         }
         window.requestAnimationFrame(initAnimate);
