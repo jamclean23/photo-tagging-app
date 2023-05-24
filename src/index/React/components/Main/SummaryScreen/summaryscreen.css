@@ -1,0 +1,40 @@
+.SummaryScreen {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.summaryModal {
+    /* opacity: 0; */
+    background-color: white;
+    border: 2px solid black;
+    width: min(calc(var(--doc-width) * .9), 400px);
+    height: calc(var(--doc-height) * .7);
+    padding: 16px;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-rows: 3rem;
+    grid-auto-rows: 3rem;
+    overflow: auto;
+}
+
+.summaryModal > h2 {
+    font-family: optima;
+    font-weight: 100;
+}
+
+.summaryModal > input {
+    padding: .3rem;
+    font-family: optima;
+    font-weight: 100;
+    text-align: center;
+}
+
+.summaryModal > button {
+    padding: .6rem 2rem;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}

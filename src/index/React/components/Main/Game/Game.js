@@ -1,10 +1,11 @@
+// ====== IMPORTS ======
+
 import './game.css';
 import React, { useEffect, useRef, useState } from 'react';
 import waldo1 from '../../../../../assets/waldo/waldo1.jpg';
 import waldo2 from '../../../../../assets/waldo/waldo2.jpg';
 import waldo3 from '../../../../../assets/waldo/waldo3.jpg';
 import waldo4 from '../../../../../assets/waldo/waldo4.jpg';
-
 import Selection from './Selection/Selection';
 
 const waldos = [
@@ -48,12 +49,11 @@ const waldos = [
     }
 ];
 
-// Export game context
-
+// ====== CONTEXT ======
 export const GameContext = React.createContext();
 
 function Game (props) {
-
+    // ====== VARIABLES ======
     const [waldoFound, setWaldoFound] = useState(false);
     const [shouldDisplaySelection, setShouldDisplaySelection] = useState(false);
     const [selectionPosition, setSelectionPosition] = useState({x: 0, y: 0});
@@ -65,6 +65,15 @@ function Game (props) {
     const mouseDown = useRef(false);
     const selectionOnWaldo = useRef(false);
     
+    // ====== LISTENERS ======
+
+    // Listen for waldo found
+    useEffect(() => {
+        if (waldoFound) {
+            handleWaldoFound();
+        }
+    }, [waldoFound]);
+
     // Resets selection component when moving it
     useEffect(() => {
         if (resetting) {
@@ -85,9 +94,27 @@ function Game (props) {
         }
     }, [selectionPosition]);
 
+    //  ====== LOCAL FUNCTIONS ======
+
+    function fadeOut () {
+        const Game = document.querySelector('.Game');
+        if (Game) {
+            const currentOpacity = window.getComputedStyle(Game).getPropertyValue('opacity');
+            Game.style.opacity = currentOpacity - .06;
+            if (currentOpacity <= 0) {
+                props.setShouldDisplayGame(false);
+                props.setWaldoWasFound(true);
+            }
+        } else {
+            return;
+        }
+
+        requestAnimationFrame(fadeOut);
+    }
+
     // Handle the user finding waldo
     function handleWaldoFound () {
-        console.log('YOU FOUND WALDO!');
+        fadeOut();
     }
 
     // Check for Waldo when selection is placed
@@ -119,20 +146,12 @@ function Game (props) {
 
     }
 
-    // Listen for waldo found
-    useEffect(() => {
-        if (waldoFound) {
-            handleWaldoFound();
-        }
-    }, [waldoFound]);
-
     // Get a random waldo game image
     function getRandomWaldo () {
         const index = Math.floor(Math.random() * 4);
         
         return waldos[index];
     }
-
 
     function handleMouseDown (event) {
         mouseDownPos.current = { x: event.screenX, y: event.screenY};
@@ -179,7 +198,6 @@ function Game (props) {
         
     }
 
-
     function handleMouseMove (event) {
         if (mouseDown.current) {
 
@@ -194,6 +212,8 @@ function Game (props) {
         mouseDown.current = false;
     }
 
+// ====== RENDER ======
+
     return (<div className='Game'>
         <GameContext.Provider value={selectionOnWaldo} >
             <div className='imgWrapper'>
@@ -203,5 +223,7 @@ function Game (props) {
         </GameContext.Provider>
     </div>);
 }
+
+// ====== EXPORT COMPONENT ======
 
 export default Game;

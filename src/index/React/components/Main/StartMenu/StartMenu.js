@@ -20,6 +20,8 @@ function StartMenu (props) {
                 props.setShouldDisplayStart(false);
                 props.setShouldDisplayGame(true);
             }
+        } else {
+            return;
         }
         
 

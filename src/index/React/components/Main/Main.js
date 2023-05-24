@@ -12,6 +12,7 @@ import uniqid from 'uniqid';
 import Cloud from "./Cloud/Cloud";
 import StartMenu from './StartMenu/StartMenu.js';
 import Game from "./Game/Game";
+import SummaryScreen from "./SummaryScreen/SummaryScreen";
 
 import './main.css';
 
@@ -24,6 +25,7 @@ export const MainContext = React.createContext()
 
 function Main (props) {
     // Init
+    const [waldoWasFound, setWaldoWasFound] = useState(false);
     const [clouds, setClouds] = useState([]);
     const [shouldGenerate, setShouldGenerate] = useState(true);
     const [shouldDisplayStart, setShouldDisplayStart] = useState(true);
@@ -34,6 +36,10 @@ function Main (props) {
     const mostCloudNum = 15;
 
     // Hooks
+
+    useEffect(() => {
+
+    }, [waldoWasFound]);
 
     useEffect(() => {
         if (renderCounter.current === 0) {
@@ -104,8 +110,13 @@ function Main (props) {
                 }
 
                 { shouldDisplayGame && !clouds.length
-                    ? <Game /> 
+                    ? <Game setWaldoWasFound={setWaldoWasFound} setShouldDisplayGame={setShouldDisplayGame} /> 
                     : '' }
+                
+                { waldoWasFound 
+                    ? <SummaryScreen />
+                    : ''
+                }
 
             </MainContext.Provider>
         </main>
