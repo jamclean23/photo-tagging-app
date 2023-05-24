@@ -2,9 +2,18 @@
     height: 100%;
     width: 100%;
     overflow: auto;
+    position: relative;
+
 }
 
-.gameBoard {
+.imgWrapper {
+    position: relative;
+    padding: 8px;
     display: block;
-    margin-inline: auto;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.selection {
+    position: absolute;
 }

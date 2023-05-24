@@ -1,0 +1,46 @@
+.Selection {
+    border: 2px solid blue;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px 2px white;
+    pointer-events: none;
+}
+
+.foundButton {
+    white-space: nowrap;
+    background-color: white;
+    border-radius: 4px;
+    position: absolute;
+    padding: 3px;
+    border: 1px solid black;
+    right: -8px;
+    transform: translate(100%);
+    pointer-events: all;
+}
+
+.foundButton:hover {
+    background-color: lightblue;
+
+}
+
+.oopsButton {
+    white-space: nowrap;
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+    position: absolute;
+    padding: 3px;
+    border: 1px solid black;
+    right: -8px;
+    transform: translate(100%);
+    pointer-events: all;
+}
+
+.oopsButton:hover {
+    background-color: lightcoral;
+    color: black;
+    
+}
