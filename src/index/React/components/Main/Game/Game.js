@@ -48,8 +48,13 @@ const waldos = [
     }
 ];
 
+// Export game context
+
+export const GameContext = React.createContext();
+
 function Game (props) {
 
+    const [waldoFound, setWaldoFound] = useState(false);
     const [shouldDisplaySelection, setShouldDisplaySelection] = useState(false);
     const [selectionPosition, setSelectionPosition] = useState({x: 0, y: 0});
     const [resetting, setResetting] = useState(false);
@@ -58,6 +63,7 @@ function Game (props) {
     const [waldoImg, setWaldoImg] = useState(waldoImgObj.img);
     const mouseDownPos = useRef({ x: 0, y: 0 });
     const mouseDown = useRef(false);
+    const selectionOnWaldo = useRef(false);
     
     // Resets selection component when moving it
     useEffect(() => {
@@ -79,6 +85,10 @@ function Game (props) {
         }
     }, [selectionPosition]);
 
+    // Handle the user finding waldo
+    function handleWaldoFound () {
+        console.log('YOU FOUND WALDO!');
+    }
 
     // Check for Waldo when selection is placed
     function checkForWaldo () {
@@ -95,31 +105,26 @@ function Game (props) {
         // const boundingBox = selection.getBoundingClientRect();
         const imgBoundingBox = document.querySelector('.gameBoard').getBoundingClientRect();
 
-        console.clear();
-        console.log('Image:');
-        console.log(imgBoundingBox);
-        console.log('\nSelection:');
-        console.log(boundingBox);
-        console.log('\nWaldo Left: ' + waldoImgObj.left);
-        console.log('Selection Left: ' + boundingBox.left);
-        console.log('Waldo Right: ' + waldoImgObj.right);
-        console.log('Selection Right: ' +boundingBox.right );
-        console.log('Waldo Top: ' + waldoImgObj.top);
-        console.log('Selection Top: ' + boundingBox.top);
-        console.log('Waldo Bottom: ' + waldoImgObj.bottom);
-        console.log('Selection Bottom: ' + boundingBox.bottom);
-
         if (
             boundingBox.left < waldoImgObj.right 
             && boundingBox.right > waldoImgObj.left
             && boundingBox.top < waldoImgObj.bottom
             && boundingBox.bottom > waldoImgObj.top
             ) {
-            console.log('found waldo');
+            selectionOnWaldo.current = true;
+        } else {
+            selectionOnWaldo.current = false;
         }
 
 
     }
+
+    // Listen for waldo found
+    useEffect(() => {
+        if (waldoFound) {
+            handleWaldoFound();
+        }
+    }, [waldoFound]);
 
     // Get a random waldo game image
     function getRandomWaldo () {
@@ -190,10 +195,12 @@ function Game (props) {
     }
 
     return (<div className='Game'>
-        <div className='imgWrapper'>
-            { shouldDisplaySelection ? <Selection setShouldDisplaySelection={setShouldDisplaySelection} selectionX={selectionPosition.x} selectionY={selectionPosition.y}/> : ''}
-            <img  onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove} onMouseDownCapture={handleMouseDown} onMouseUpCapture={handleMouseUp} draggable='false' className='gameBoard' src={waldoImg}/>
-        </div>
+        <GameContext.Provider value={selectionOnWaldo} >
+            <div className='imgWrapper'>
+                { shouldDisplaySelection ? <Selection selectionPosition={selectionPosition} setWaldoFound={setWaldoFound} setShouldDisplaySelection={setShouldDisplaySelection} selectionX={selectionPosition.x} selectionY={selectionPosition.y}/> : ''}
+                <img  onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove} onMouseDownCapture={handleMouseDown} onMouseUpCapture={handleMouseUp} draggable='false' className='gameBoard' src={waldoImg}/>
+            </div>
+        </GameContext.Provider>
     </div>);
 }
 

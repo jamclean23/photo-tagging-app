@@ -19,6 +19,7 @@
     right: -8px;
     transform: translate(100%);
     pointer-events: all;
+
 }
 
 .foundButton:hover {

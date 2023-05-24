@@ -1,14 +1,51 @@
 import './selection.css';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import Game, { GameContext } from '../Game';
 
 function Selection (props) {
 
     const [shouldDisplayFoundBtn, setShouldDisplayFoundBtn] = useState(true);
     const [shouldDisplayOopsBtn, setShouldDisplayOopsBtn] = useState(false);
+    const [translateAmount, setTranslateAmount] = useState({x: 100, y: 0});
+    const selectionOnWaldo = useContext(GameContext);
+
+    // Listen for found and oops buttons
+    useEffect(() => {
+        if (shouldDisplayFoundBtn) {
+            checkForOffscreen('foundButton');
+        } else if (shouldDisplayOopsBtn) {
+            checkForOffscreen('oopsButton');
+        }
+    }, [shouldDisplayFoundBtn, shouldDisplayOopsBtn]);
+
+    function checkForOffscreen (button = '') {
+        if (button) {
+            const gameBoardBox = document.querySelector('.gameBoard').getBoundingClientRect();
+
+            let offsetXPct = translateAmount.x;
+            let offsetYPct = translateAmount.y;
+
+            if (props.selectionPosition.x > gameBoardBox.width - 150) {
+                offsetXPct = -80;
+            }
+            
+            if (props.selectionPosition.y < 40) {
+                offsetYPct = 120;
+            }
+
+            setTranslateAmount({x: offsetXPct, y: offsetYPct});
+        }
+    }
 
     function handleFoundButtonClick () {
         setShouldDisplayFoundBtn(false);
-        setShouldDisplayOopsBtn(true);
+
+        if (selectionOnWaldo.current) {
+            props.setWaldoFound(true);
+        } else {
+            setShouldDisplayOopsBtn(true);
+        }
     }
 
     function handleOopsButtonClick () {
@@ -19,12 +56,16 @@ function Selection (props) {
     return (<div className='Selection' style={{ left: props.selectionX, top: props.selectionY }}>
         
         { shouldDisplayFoundBtn 
-            ? <div className='foundButton' onClick={handleFoundButtonClick}>I found Waldo!</div>
+            ? <div className='foundButton' 
+                    style={{ transform: `translate(${translateAmount.x}%, ${translateAmount.y}%)`}} 
+                    onClick={handleFoundButtonClick}>I found Waldo!</div>
             : '' 
         }
 
         { shouldDisplayOopsBtn
-            ? <div className='oopsButton' onClick={handleOopsButtonClick} >Oops, Keep looking!</div>
+            ? <div className='oopsButton' 
+                    style={{ transform: `translate(${translateAmount.x + 25}%, ${translateAmount.y}%)`}} 
+                    onClick={handleOopsButtonClick} >Oops, Keep looking!</div>
             : ''
         }
     </div>);
