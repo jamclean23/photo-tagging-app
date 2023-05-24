@@ -28,6 +28,9 @@ function Selection (props) {
 
             if (props.selectionPosition.x > gameBoardBox.width - 150) {
                 offsetXPct = -80;
+                if (button === 'oopsButton') {
+                    offsetXPct += 25;
+                }
             }
             
             if (props.selectionPosition.y < 40) {
@@ -64,7 +67,7 @@ function Selection (props) {
 
         { shouldDisplayOopsBtn
             ? <div className='oopsButton' 
-                    style={{ transform: `translate(${translateAmount.x + 25}%, ${translateAmount.y}%)`}} 
+                    style={{ transform: `translate(${translateAmount.x}%, ${translateAmount.y}%)`}} 
                     onClick={handleOopsButtonClick} >Oops, Keep looking!</div>
             : ''
         }
