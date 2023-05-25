@@ -15,6 +15,7 @@ import Game from "./Game/Game";
 import SummaryScreen from "./SummaryScreen/SummaryScreen";
 
 import './main.css';
+import Leaderboard from "./Leaderboard/Leaderboard";
 
 // Create context
 
@@ -25,11 +26,14 @@ export const MainContext = React.createContext()
 
 function Main (props) {
     // Init
+    const sessionId = useRef(uniqid());
     const [waldoWasFound, setWaldoWasFound] = useState(false);
     const [clouds, setClouds] = useState([]);
     const [shouldGenerate, setShouldGenerate] = useState(true);
     const [shouldDisplayStart, setShouldDisplayStart] = useState(true);
     const [shouldDisplayGame, setShouldDisplayGame] = useState(false);
+    const [shouldDisplaySummary, setShouldDisplaySummary] = useState(false);
+    const [shouldDisplayLeaderboard, setShouldDisplayLeaderboard] = useState(false);
     const renderCounter = useRef(0);
     const cloudCounter = useRef(0);
     const leastCloudNum = 12;
@@ -38,7 +42,9 @@ function Main (props) {
     // Hooks
 
     useEffect(() => {
-
+        if (waldoWasFound) {
+            setShouldDisplaySummary(true);
+        }
     }, [waldoWasFound]);
 
     useEffect(() => {
@@ -110,11 +116,16 @@ function Main (props) {
                 }
 
                 { shouldDisplayGame && !clouds.length
-                    ? <Game setWaldoWasFound={setWaldoWasFound} setShouldDisplayGame={setShouldDisplayGame} /> 
+                    ? <Game sessionId={sessionId} setWaldoWasFound={setWaldoWasFound} setShouldDisplayGame={setShouldDisplayGame} /> 
                     : '' }
                 
-                { waldoWasFound 
-                    ? <SummaryScreen />
+                { shouldDisplaySummary
+                    ? <SummaryScreen setShouldDisplayLeaderboard={setShouldDisplayLeaderboard} setShouldDisplaySummary={setShouldDisplaySummary} sessionId={sessionId} />
+                    : ''
+                }
+
+                { shouldDisplayLeaderboard
+                    ? <Leaderboard />
                     : ''
                 }
 

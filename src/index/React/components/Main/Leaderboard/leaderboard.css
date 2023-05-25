@@ -1,4 +1,4 @@
-.SummaryScreen {
+.Leaderboard {
     height: 100%;
     width: 100%;
     display: grid;
@@ -7,7 +7,7 @@
     opacity: 0;
 }
 
-.summaryModal {
+.leaderboardModal {
     background-color: white;
     border: 2px solid black;
     width: min(calc(var(--doc-width) * .9), 400px);
@@ -21,24 +21,7 @@
     overflow: auto;
 }
 
-.summaryModal > h2 {
+.leaderboardModal > h2 {
     font-family: optima;
     font-weight: 100;
-}
-
-.summaryModal > input {
-    padding: .3rem;
-    font-family: optima;
-    font-weight: 100;
-    text-align: center;
-}
-
-.summaryModal > button {
-    padding: .6rem 2rem;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
-}
-
-.nameInput {
-    outline: none;
 }

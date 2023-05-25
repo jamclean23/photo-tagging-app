@@ -2,11 +2,35 @@
 
 import './game.css';
 import React, { useEffect, useRef, useState } from 'react';
+import uniqid from 'uniqid';
+
 import waldo1 from '../../../../../assets/waldo/waldo1.jpg';
 import waldo2 from '../../../../../assets/waldo/waldo2.jpg';
 import waldo3 from '../../../../../assets/waldo/waldo3.jpg';
 import waldo4 from '../../../../../assets/waldo/waldo4.jpg';
+
 import Selection from './Selection/Selection';
+
+// Firebase
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from '../../../../../../firebase-config';
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    limit,
+    onSnapshot,
+    setDoc,
+    updateDoc,
+    doc,
+    serverTimestamp,
+    Timestamp,
+    } from 'firebase/firestore';
+
+const app = initializeApp(firebaseConfig);
+const firestoreDB = getFirestore(app);
 
 const waldos = [
     { 
@@ -54,6 +78,7 @@ export const GameContext = React.createContext();
 
 function Game (props) {
     // ====== VARIABLES ======
+
     const [waldoFound, setWaldoFound] = useState(false);
     const [shouldDisplaySelection, setShouldDisplaySelection] = useState(false);
     const [selectionPosition, setSelectionPosition] = useState({x: 0, y: 0});
@@ -114,7 +139,13 @@ function Game (props) {
 
     // Handle the user finding waldo
     function handleWaldoFound () {
+        sendEndTime();
         fadeOut();
+    }
+
+    async function sendEndTime () {
+        console.log('Sending end time');
+        await setDoc(doc(firestoreDB, "end-time", props.sessionId.current), {endTime: Timestamp.now()});
     }
 
     // Check for Waldo when selection is placed
@@ -212,13 +243,20 @@ function Game (props) {
         mouseDown.current = false;
     }
 
+    async function handleOnLoad () {
+
+        // Send timestamp to server to start timer
+        console.log('sending start time');
+        await setDoc(doc(firestoreDB, "start-time", props.sessionId.current), {startTime: Timestamp.now()});
+    }
+
 // ====== RENDER ======
 
     return (<div className='Game'>
         <GameContext.Provider value={selectionOnWaldo} >
             <div className='imgWrapper'>
                 { shouldDisplaySelection ? <Selection selectionPosition={selectionPosition} setWaldoFound={setWaldoFound} setShouldDisplaySelection={setShouldDisplaySelection} selectionX={selectionPosition.x} selectionY={selectionPosition.y}/> : ''}
-                <img  onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove} onMouseDownCapture={handleMouseDown} onMouseUpCapture={handleMouseUp} draggable='false' className='gameBoard' src={waldoImg}/>
+                <img onLoad={handleOnLoad} onMouseLeave={handleMouseLeave} onMouseMove={handleMouseMove} onMouseDownCapture={handleMouseDown} onMouseUpCapture={handleMouseUp} draggable='false' className='gameBoard' src={waldoImg}/>
             </div>
         </GameContext.Provider>
     </div>);
